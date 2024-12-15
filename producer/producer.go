@@ -48,8 +48,11 @@ func main() {
 		false,       // mandatory: если `true`, и сообщение не может быть доставлено, оно будет возвращено отправителю
 		false,       // immediate: если `true`, сообщение будет отправлено немедленно
 		amqp.Publishing{
-			ContentType: "text/plain",            // тип содержимого сообщения
-			Body:        []byte("ЭТо сообщение"), // само сообщение
+			ContentType: "text/plain", // тип содержимого сообщения
+			Headers: amqp.Table{
+				"type": "hello",
+			},
+			Body: []byte("Это сообщение"), // само сообщение
 		},
 	)
 	if err != nil {

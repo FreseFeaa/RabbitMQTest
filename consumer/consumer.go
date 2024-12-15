@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"main/redis"
 
 	"github.com/streadway/amqp"
 )
@@ -41,6 +42,10 @@ func main() {
 	//Запускаем Гоурутину с выводом всех сообщений из Нашего канала msgs
 	go func() {
 		for d := range msgs {
+			if msgType, ok := d.Headers["type"].(string); ok && msgType == "hello" {
+				fmt.Println("Полученно сообщение с типом: hello")
+				redis.Increment("test")
+			}
 			fmt.Printf("Полученное сообщение: %s\n", d.Body)
 		}
 	}()
